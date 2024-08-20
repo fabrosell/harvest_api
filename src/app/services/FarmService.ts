@@ -14,10 +14,17 @@ export class FarmService implements IFarmService {
     }
 
     async getAll(): Promise<Farm[]> {
-        throw new Error('Method not implemented.')
+
+        return this.farmRepository.getAll();
     }
 
     async create(farm: Farm): Promise<Farm> {
-        throw new Error('Method not implemented.')
+ 
+        let existing_farm = await this.farmRepository.getByNameAndLocation(farm.name, farm.location);
+
+        if (existing_farm)
+            throw new Error('Cannot create farm: name and location already exists for a farm.');
+
+        return this.farmRepository.create(farm);
     }
 }
